@@ -44,6 +44,11 @@ async function start() {
         },
         crossOriginEmbedderPolicy: false,
         referrerPolicy: { policy: 'no-referrer' },
+        // taxES no debe embeberse en ningún iframe (mitiga clickjacking más
+        // allá de `frame-ancestors`). Mantener alineado con `public/_headers`
+        // para que ambos canales — Express y Cloudflare Pages — entreguen la
+        // misma política.
+        xFrameOptions: { action: 'deny' },
       }),
     )
   }

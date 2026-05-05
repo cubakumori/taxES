@@ -1,0 +1,11 @@
+# Cloudflare Pages — fallback SPA para vue-router en modo history.
+#
+# Sin este redirect, recargar una ruta como `/conceptos` o `/preparacion-ibkr`
+# devolvería 404 porque CF Pages no tiene un fichero físico ahí. La regla
+# servir `index.html` con código 200 (no 301/302) deja que el router de Vue
+# resuelva la ruta en cliente sin perder la URL original.
+#
+# Sintaxis: <patrón>  <destino>  <status>
+# Ver https://developers.cloudflare.com/pages/configuration/redirects/
+
+/*    /index.html    200

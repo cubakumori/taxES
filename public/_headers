@@ -1,0 +1,22 @@
+# Cabeceras HTTP para Cloudflare Pages.
+#
+# Replica la CSP que `helmet` aplica en `server.ts` cuando taxES corre con su
+# propio Express en producción. En CF Pages no hay backend, así que las
+# cabeceras se sirven desde este fichero (https://developers.cloudflare.com/pages/configuration/headers/).
+#
+# Cualquier cambio aquí debe reflejarse también en `server.ts` (helmet) para
+# que ambos canales — web hosteada en CF Pages y self-host con Express —
+# entreguen la misma política al navegador.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), accelerometer=(), gyroscope=(), magnetometer=()
+
+# Los assets generados por Vite (`/assets/<hash>.js|.css|...`) llevan hash en
+# el nombre, así que son seguros de cachear inmutables durante un año.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
