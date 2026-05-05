@@ -108,8 +108,12 @@ Esta aplicación **no es asesoramiento fiscal**. Es una herramienta de ayuda par
 
 ## Apoya el proyecto
 
-Si la app te ha ahorrado tiempo o dinero, considera invitarme a un café:
-[☕ ko-fi.com/kumoricuba](https://ko-fi.com/kumoricuba)
+Si **taxES** te ha resultado de alguna utilidad, considera invitarme a un café:
+
+[![PayPal](https://img.shields.io/badge/PayPal-Donar-blue?style=for-the-badge&logo=paypal)](https://paypal.me/ernestortiz)
+
+[![Ko-fi](https://img.shields.io/badge/BUY_ME_A-KO_FI-darkseagreen?style=for-the-badge&logo=ko-fi)](https://ko-fi.com/kumoricuba)
+
 
 ---
 
