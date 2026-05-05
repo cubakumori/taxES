@@ -8,6 +8,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+### Infra — Build listo para Cloudflare Pages (despliegue estático)
+
+Sin cambios en la app: prepara el repo para servirse desde un hosting estático tipo Cloudflare Pages, Netlify o similar, sin necesidad del Express de `server.ts`.
+
+- `public/_headers` (nuevo): replica la CSP que `helmet` emite en producción + `Strict-Transport-Security`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva. Cache inmutable de 1 año para `/assets/*` (los hashes en el nombre de fichero garantizan invalidación correcta)
+- `public/_redirects` (nuevo): SPA fallback `/* /index.html 200` para que `vue-router` (modo history) no devuelva 404 al recargar rutas como `/conceptos`
+- `server.ts`: `helmet` ahora usa `xFrameOptions: { action: 'deny' }` (antes el default `SAMEORIGIN`) para alinear con `_headers`. La app no debe embeberse en ningún iframe; `frame-ancestors 'none'` ya lo cubría en CSP3 pero `XFO: DENY` añade defensa para navegadores antiguos
+- `CONTRIBUTING.md`: nueva sección "Despliegue" con los dos canales y la regla explícita de mantener `server.ts` (helmet) y `public/_headers` sincronizados
+
+Build de Vite copia `public/_headers` y `public/_redirects` a `dist/` automáticamente. No requiere cambio en CI.
+
 ## [1.1.1] — 2026-05-05
 
 Pulido de seguridad, código y UX a partir de una revisión completa. Sin cambios en el motor fiscal: las cifras IRPF que produce la app son idénticas a las de 1.1.0 con los mismos extractos de entrada. Compatible con backups cifrados creados por versiones previas.

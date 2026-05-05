@@ -35,7 +35,8 @@ Foco: dividendos, retenciones, deducción por doble imposición internacional, y
 ## Stack
 
 - **Frontend**: Vite 7 + Vue 3 + TypeScript + Tailwind CSS 4 + Pinia + vue-router + lucide-vue-next.
-- **Backend mínimo**: Express (Node) en el mismo proceso que Vite vía `server.ts` (corre con `tsx`). En producción aplica `helmet` con CSP estricta (`default-src 'self'`, sin `unsafe-eval`). Sin lock-in a ningún PaaS; deployable en un VPS genérico con `node server.ts`.
+- **Backend mínimo**: Express (Node) en el mismo proceso que Vite vía `server.ts` (corre con `tsx`). En producción aplica `helmet` con CSP estricta (`default-src 'self'`, sin `unsafe-eval`). Sin lock-in a ningún PaaS; deployable en un VPS genérico con `node server.ts`, en un hosting estático (Cloudflare Pages, Netlify, etc.) servido directamente desde `dist/`, o como zip portable.
+- **Despliegue estático**: `public/_headers` y `public/_redirects` replican la CSP de `helmet` y el SPA fallback de `vue-router` para hostings tipo Cloudflare Pages, donde no hay Express. La política de seguridad es la misma en ambos canales.
 - **Tests**: Vitest (94 tests unitarios).
 - **Cifrado**: Web Crypto API nativa (sin dependencias externas) para el backup portable.
 - **FX**: Tipos de cambio del BCE bundleados como JSON; `npm run fx:update` descarga la última versión.
@@ -78,6 +79,7 @@ taxES/
 │       ├── export/         # Generadores CSV (resumen por país · dividendos · plusvalías)
 │       └── __fixtures__.ts # Fixtures sintéticos para tests (cuenta ficticia)
 ├── api/                    # Express router mínimo (/api/health)
+├── public/                 # Estáticos copiados a dist/ (incluye _headers / _redirects para CF Pages)
 ├── scripts/                # tsx scripts: parse, render, update-bce-rates
 ├── samples/                # Fixtures locales reales (gitignored por defecto, ver abajo)
 ├── server.ts               # Vite middleware + Express, único proceso

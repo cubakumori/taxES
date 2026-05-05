@@ -163,6 +163,34 @@ Un PR con ✗ roja no debería mergearse. Si el fallo es genuino, arréglalo ant
 
 ---
 
+## Despliegue
+
+taxES soporta dos canales de distribución que comparten el mismo build de Vite:
+
+### A) Self-host con Express (`npm start`)
+
+```bash
+NODE_ENV=production npm start    # sirve dist/ + /api/health en :5173
+```
+
+`server.ts` aplica `helmet` con CSP estricta. Apto para VPS propios o cualquier hosting Node.
+
+### B) Hosting estático (Cloudflare Pages, Netlify, S3+CloudFront…)
+
+Build command `npm run build`, publish directory `dist`. Los ficheros `public/_headers` y `public/_redirects` se copian automáticamente y aportan:
+
+- La **misma CSP** que helmet (replicada como cabeceras estáticas).
+- `Strict-Transport-Security`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva.
+- SPA fallback `/* /index.html 200` para que `vue-router` (modo history) no devuelva 404 al recargar rutas.
+
+Cloudflare Pages: variable de entorno `NODE_VERSION=20`, framework preset `None`, build command `npm run build`, output `dist`. Sin más config.
+
+### Regla importante
+
+**`server.ts` (helmet) y `public/_headers` deben mantenerse sincronizados.** Cualquier cambio en una directiva (CSP, XFO, Referrer-Policy…) tiene que reflejarse en el otro fichero, o el comportamiento divergirá entre los dos canales y un usuario que mueva sesiones entre uno y otro lo notaría como bugs sutiles. Hay un comentario al inicio de cada fichero recordando esta regla.
+
+---
+
 ## Seguridad y privacidad (importante)
 
 - La app **nunca debe enviar datos de extracto a un servidor**. El backend Express que hay es para servir estáticos y endpoints triviales.
