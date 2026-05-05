@@ -38,7 +38,7 @@ Gaps reales del parser que afectan la fidelidad del resumen.
 ## Lanzamiento público (cuando decidas publicar el repo)
 
 - [ ] Hacer público el repo en GitHub
-- [ ] Deploy a un dominio (Cloudflare Pages, Netlify, VPS propio…). El backend Express es opcional: con el SPA estático + cualquier hosting de ficheros vale
+- [x] ~~Deploy a un dominio~~ — desplegado en Cloudflare Pages (`taxes-2ut.pages.dev`). Hosting estático con `public/_headers` (CSP) y `public/_redirects` (SPA fallback). Auto-deploy en cada push a `main`. Falta dominio propio si se quiere `taxes.<algo>`
 - [ ] Actualizar enlace al repo en `About.vue` y añadir badge de CI al README
 - [ ] Captar 5-10 beta testers con carteras IBKR para cazar edge cases en extractos distintos
 

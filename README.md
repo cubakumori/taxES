@@ -6,6 +6,14 @@ Foco: dividendos, retenciones, deducción por doble imposición internacional, y
 
 ---
 
+## Pruébalo ya en el navegador
+
+**[taxes-2ut.pages.dev](https://taxes-2ut.pages.dev)** — sin instalar nada.
+
+Sube tu `DividendReport.csv` o `Informe de Actividad.csv` directamente: el parseo corre 100 % en tu navegador, los archivos no se suben a ningún servidor. Hosting estático en Cloudflare Pages con CSP estricta — la app no tiene capacidad técnica de exfiltrar nada aunque quisiera.
+
+---
+
 ## Qué hace
 
 - Parsea el `DividendReport.csv` y/o el `Informe de Actividad.csv` anual de IBKR.

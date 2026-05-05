@@ -8,16 +8,30 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-### Infra — Build listo para Cloudflare Pages (despliegue estático)
+### Infra — Despliegue público en Cloudflare Pages
 
-Sin cambios en la app: prepara el repo para servirse desde un hosting estático tipo Cloudflare Pages, Netlify o similar, sin necesidad del Express de `server.ts`.
+taxES está vivo en **<https://taxes-2ut.pages.dev>**. Hosting estático sin backend, auto-deploy en cada push a `main` desde el repo de GitHub. La app funciona sin servidor: el Express de `server.ts` queda como opción para self-host.
 
-- `public/_headers` (nuevo): replica la CSP que `helmet` emite en producción + `Strict-Transport-Security`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva. Cache inmutable de 1 año para `/assets/*` (los hashes en el nombre de fichero garantizan invalidación correcta)
-- `public/_redirects` (nuevo): SPA fallback `/* /index.html 200` para que `vue-router` (modo history) no devuelva 404 al recargar rutas como `/conceptos`
+- `public/_headers` (nuevo): replica la CSP que `helmet` emite en producción + `Strict-Transport-Security`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy` restrictiva. Cache inmutable de 1 año para `/assets/*` (los hashes en el nombre de fichero garantizan invalidación correcta). Verificado con `curl -I` contra la URL pública: las cabeceras llegan exactamente como en self-host
+- `public/_redirects` (nuevo): SPA fallback `/* /index.html 200` para que `vue-router` (modo history) no devuelva 404 al recargar rutas como `/conceptos` o `/preparacion-ibkr`
 - `server.ts`: `helmet` ahora usa `xFrameOptions: { action: 'deny' }` (antes el default `SAMEORIGIN`) para alinear con `_headers`. La app no debe embeberse en ningún iframe; `frame-ancestors 'none'` ya lo cubría en CSP3 pero `XFO: DENY` añade defensa para navegadores antiguos
-- `CONTRIBUTING.md`: nueva sección "Despliegue" con los dos canales y la regla explícita de mantener `server.ts` (helmet) y `public/_headers` sincronizados
+- `CONTRIBUTING.md`: nueva sección "Despliegue" con los dos canales (Express self-host y hosting estático) y la regla explícita de mantener `server.ts` (helmet) y `public/_headers` sincronizados
+- `README.md`: bloque «Pruébalo ya en el navegador» justo bajo la introducción, con el enlace público
 
-Build de Vite copia `public/_headers` y `public/_redirects` a `dist/` automáticamente. No requiere cambio en CI.
+Build de Vite copia `public/_headers` y `public/_redirects` a `dist/` automáticamente. No requiere cambio en CI. Cloudflare Pages config: framework preset `None`, build command `npm run build`, output `dist`, env `NODE_VERSION=20`.
+
+### Fix — `.gitignore`: regla `ibkr/` anclada a la raíz
+
+`.gitignore` tenía la regla `ibkr/` sin barra inicial. La intención era ignorar el directorio raíz `/ibkr/` (datos reales del autor durante el desarrollo del parser, ver CLAUDE.md), pero al no estar anclada también capturaba cualquier directorio llamado `ibkr/` en el árbol — incluido **`src/lib/parser/ibkr/`**, que contiene los 8 ficheros del parser IBKR (csv.ts, dividend-report.ts, activity-statement.ts, detect.ts, utils.ts y sus tests).
+
+Síntoma: `git status` limpio en local pero el directorio nunca llegaba al repo. El primer build de Cloudflare Pages reveló el bug — su clon limpio en Linux no encontraba los módulos:
+
+```
+src/lib/rules/ibkr-equivalence.test.ts(3,41): error TS2307:
+Cannot find module '../parser/ibkr/dividend-report'
+```
+
+Cambiada a `/ibkr/` (anclada). Los 8 ficheros añadidos al repo en el mismo commit. El typecheck local pasaba porque `vue-tsc` lee del filesystem, no de git.
 
 ## [1.1.1] — 2026-05-05
 
