@@ -8,6 +8,7 @@ dist
 .idea
 coverage
 .cache
+.claude
 
 #others
 ibkr/
