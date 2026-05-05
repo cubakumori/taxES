@@ -11,7 +11,11 @@ coverage
 .claude
 
 #others
-ibkr/
+# Anclado a la raíz: ignora `/ibkr/` (datos reales del autor durante el
+# desarrollo del parser) sin afectar a `src/lib/parser/ibkr/` que sí va al
+# repo. Sin la barra inicial, git interpretaba la regla como "cualquier
+# directorio ibkr/ en el árbol".
+/ibkr/
 
 # Notas estratégicas privadas (no para repo público)
 MONETIZATION.md
