@@ -1,0 +1,45 @@
+{
+  "name": "taxes",
+  "version": "1.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Prepara tu declaración de la renta española (IRPF) a partir del extracto anual de Interactive Brokers. Parseo local en el navegador.",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "build": "vue-tsc --noEmit && vite build",
+    "start": "NODE_ENV=production tsx server.ts",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "parse:sample": "tsx scripts/parse-sample.ts",
+    "parse:activity": "tsx scripts/parse-activity.ts",
+    "render:irpf": "tsx scripts/render-irpf.ts",
+    "fx:update": "tsx scripts/update-bce-rates.ts"
+  },
+  "dependencies": {
+    "@vee-validate/zod": "^4.13.2",
+    "axios": "^1.7.2",
+    "express": "^4.19.2",
+    "helmet": "^8.1.0",
+    "lucide-vue-next": "^1.0.0",
+    "pinia": "^2.1.7",
+    "vee-validate": "^4.13.2",
+    "vue": "^3.4.31",
+    "vue-router": "^4.3.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "@vitejs/plugin-vue": "^6.0.4",
+    "tailwindcss": "^4.2.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.4",
+    "vue-tsc": "^2.0.26"
+  }
+}

@@ -1,0 +1,16 @@
+node_modules
+dist
+.env
+.env.local
+.DS_Store
+*.log
+.vscode
+.idea
+coverage
+.cache
+
+#others
+ibkr/
+
+# Notas estratégicas privadas (no para repo público)
+MONETIZATION.md
